@@ -8,9 +8,6 @@ public class Spawner : ObjectPool
     [SerializeField] private float _secondsBetweenSpawn;
     [SerializeField] private Transform[] _spawnPoints;
     
-
-    private float _elapsedTime = 0;
-
     private void Start()
     {
         Initialize(_driverTemplates);
@@ -18,18 +15,16 @@ public class Spawner : ObjectPool
 
     private void Update()
     {
-        _elapsedTime += Time.deltaTime;
+       StartCoroutine(SpawnCars());
+    }
 
-        if (_elapsedTime >= _secondsBetweenSpawn )
+    private IEnumerator SpawnCars()
+    {
+        if (TryGetObject(out GameObject driver))
         {
-            if (TryGetObject(out GameObject driver))
-            {
-                _elapsedTime = 0;
-
-                int spawnPointNumber = Random.Range(0, _spawnPoints.Length);
-
-                SetDriver(driver, _spawnPoints[spawnPointNumber].position);
-            }
+            yield return new WaitForSeconds(_secondsBetweenSpawn);
+            int spawnPointNumber = Random.Range(0, _spawnPoints.Length);
+            SetDriver(driver, _spawnPoints[spawnPointNumber].position);
         }
     }
 

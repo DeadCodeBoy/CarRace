@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(PlayerMover))]
-
+[RequireComponent(typeof(Image))]
 
 public class Tire : MonoBehaviour
 {
